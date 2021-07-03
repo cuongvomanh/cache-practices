@@ -15,18 +15,9 @@ public class MySpringProperties {
 
     @Component
     public static class Cache {
-        private String prefix;
         private Hazelcast hazelcast = new Hazelcast();
         private Redis redis = new Redis();
-        private MySentinel sentinel = new MySentinel();
-
-        public String getPrefix() {
-            return prefix;
-        }
-
-        public void setPrefix(String prefix) {
-            this.prefix = prefix;
-        }
+        private Sentinel sentinel = new Sentinel();
 
         public Hazelcast getHazelcast() {
             return hazelcast;
@@ -36,7 +27,7 @@ public class MySpringProperties {
             return redis;
         }
 
-        public MySentinel getSentinel() {
+        public Sentinel getSentinel() {
             return sentinel;
         }
 
@@ -118,13 +109,13 @@ public class MySpringProperties {
             }
         }
 
-        public static class MySentinel {
+        public static class Sentinel {
             private String master;
             private List<String> nodes;
             private int port;
             private String password;
-            private Map<String, String> appCacheMap;
-            private Map<String, CacheSettingsModel> cacheConfigAsMap;
+            private Map<String, String> cacheTypeMap;
+            private Map<String, CacheConfig> cacheConfigAsMap;
 
             public String getMaster() {
                 return master;
@@ -158,23 +149,23 @@ public class MySpringProperties {
                 this.password = password;
             }
 
-            public Map<String, String> getAppCacheMap() {
-                return appCacheMap;
+            public Map<String, String> getCacheTypeMap() {
+                return cacheTypeMap;
             }
 
-            public void setAppCacheMap(Map<String, String> appCacheMap) {
-                this.appCacheMap = appCacheMap;
+            public void setCacheTypeMap(Map<String, String> cacheTypeMap) {
+                this.cacheTypeMap = cacheTypeMap;
             }
 
-            public Map<String, CacheSettingsModel> getCacheConfigAsMap() {
+            public Map<String, CacheConfig> getCacheConfigAsMap() {
                 return cacheConfigAsMap;
             }
 
-            public void setCacheConfigAsMap(Map<String, CacheSettingsModel> cacheConfigAsMap) {
+            public void setCacheConfigAsMap(Map<String, CacheConfig> cacheConfigAsMap) {
                 this.cacheConfigAsMap = cacheConfigAsMap;
             }
 
-            public static class CacheSettingsModel {
+            public static class CacheConfig {
                 private String timeToLiveSeconds = "1000";
 
                 public String getTimeToLiveSeconds() {

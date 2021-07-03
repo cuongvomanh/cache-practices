@@ -1,7 +1,6 @@
 package com.example.cacheinspring.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -45,9 +44,9 @@ public class RedisSentinelCacheConfiguration extends CachingConfigurerSupport {
                 .disableCachingNullValues();
     }
 
-    private RedisCacheConfiguration buildRedisCacheConfig(MySpringProperties.Cache.MySentinel.CacheSettingsModel cacheSettingsModel) {
+    private RedisCacheConfiguration buildRedisCacheConfig(MySpringProperties.Cache.Sentinel.CacheConfig cacheConfig) {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(Long.parseLong(cacheSettingsModel.getTimeToLiveSeconds())))
+                .entryTtl(Duration.ofSeconds(Long.parseLong(cacheConfig.getTimeToLiveSeconds())))
                 .disableCachingNullValues();
     }
 
@@ -56,10 +55,10 @@ public class RedisSentinelCacheConfiguration extends CachingConfigurerSupport {
 
         Map<String, RedisCacheConfiguration> cacheConfigs = new HashMap<>();
 
-        Map<String, MySpringProperties.Cache.MySentinel.CacheSettingsModel> cacheConfigMap = mySpringProperties.getCache().getSentinel().getCacheConfigAsMap();
-        Map<String, String> appCacheMap = mySpringProperties.getCache().getSentinel().getAppCacheMap();
+        Map<String, MySpringProperties.Cache.Sentinel.CacheConfig> cacheConfigMap = mySpringProperties.getCache().getSentinel().getCacheConfigAsMap();
+        Map<String, String> cacheTypeMap = mySpringProperties.getCache().getSentinel().getCacheTypeMap();
 
-        appCacheMap.forEach((key, value) -> cacheConfigs.put(key, buildRedisCacheConfig(cacheConfigMap.get(value))));
+        cacheTypeMap.forEach((key, value) -> cacheConfigs.put(key, buildRedisCacheConfig(cacheConfigMap.get(value))));
 
         return RedisCacheManager.builder(redisConnectionFactory())
                 .cacheDefaults(cacheConfiguration())

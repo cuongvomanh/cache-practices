@@ -22,7 +22,7 @@ import org.springframework.core.env.Profiles;
 @Configuration
 @EnableCaching
 @Profile("hazelcast")
-public class HazelcastCachingConfig extends CachingConfigurerSupport {
+public class HazelcastCacheConfig extends CachingConfigurerSupport {
 
     private GitProperties gitProperties;
     private BuildProperties buildProperties;
@@ -31,7 +31,7 @@ public class HazelcastCachingConfig extends CachingConfigurerSupport {
 
     private final Environment env;
 
-    public HazelcastCachingConfig(Environment env) {
+    public HazelcastCacheConfig(Environment env) {
         this.env = env;
     }
 
