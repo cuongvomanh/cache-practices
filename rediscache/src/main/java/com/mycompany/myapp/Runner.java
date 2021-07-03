@@ -1,10 +1,7 @@
-package com.example.cacheinspring;
+package com.mycompany.myapp;
 
-import com.example.cacheinspring.domain.Book;
-import com.example.cacheinspring.service.BookService;
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.map.IMap;
+import com.mycompany.myapp.domain.Book;
+import com.mycompany.myapp.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

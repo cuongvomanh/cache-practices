@@ -1,15 +1,11 @@
-package com.example.cacheinspring.service;
+package com.mycompany.myapp.service;
 
-import com.example.cacheinspring.config.Contants;
-import com.example.cacheinspring.config.MySpringProperties;
-import com.example.cacheinspring.domain.Book;
-import com.example.cacheinspring.domain.BookRepository;
+import com.mycompany.myapp.domain.Book;
+import com.mycompany.myapp.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,19 +20,19 @@ public class BookService {
     }
 
     @Cacheable(Contants.CACHE_PREFIX)
-//    @Cacheable("books")
+//    @Cacheable(key="books")
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
 
     @Cacheable(Contants.CACHE_PREFIX)
-//    @Cacheable("activebooks")
+//    @Cacheable(key="activebooks")
     public List<Book> findAllActive() {
         return bookRepository.findAllByStatus(ACTIVE);
     }
 
     @Cacheable(Contants.CACHE_PREFIX)
-//    @Cacheable("booksbystatus")
+//    @Cacheable(key="booksbystatus")
     public List<Book> findAllByStatus(int status) {
         return bookRepository.findAllByStatus(status);
     }

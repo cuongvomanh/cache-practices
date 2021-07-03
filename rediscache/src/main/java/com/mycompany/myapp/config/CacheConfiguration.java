@@ -1,5 +1,6 @@
 package com.mycompany.myapp.config;
 
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 import javax.cache.configuration.MutableConfiguration;
@@ -21,6 +22,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.config.cache.PrefixedKeyGenerator;
 
@@ -79,6 +81,8 @@ public class CacheConfiguration {
             createCache(cm, com.mycompany.myapp.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
             createCache(cm, com.mycompany.myapp.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
             createCache(cm, com.mycompany.myapp.domain.User.class.getName(), jcacheConfiguration);
+            createCache(cm, "book", jcacheConfiguration);
+            createCache(cm, com.mycompany.myapp.domain.Book.class.getName(), jcacheConfiguration);
             createCache(cm, com.mycompany.myapp.domain.Authority.class.getName(), jcacheConfiguration);
             createCache(cm, com.mycompany.myapp.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             // jhipster-needle-redis-add-entry
@@ -110,6 +114,13 @@ public class CacheConfiguration {
 
     @Bean
     public KeyGenerator keyGenerator() {
-        return new PrefixedKeyGenerator(this.gitProperties, this.buildProperties);
+        return new KeyGenerator() {
+            @Override
+            public Object generate(Object target, Method method, Object... params) {
+                return target.getClass().getSimpleName() + "_"
+                    + method.getName() + "_"
+                    + StringUtils.arrayToDelimitedString(params, "_");
+            }
+        };
     }
 }
