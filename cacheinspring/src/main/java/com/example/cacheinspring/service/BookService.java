@@ -22,12 +22,7 @@ public class BookService {
             @CacheEvict(value = Contants.SERVICE_ONE_CACHE, key = "'bookbytenantactive:' + #book.getTenantId()"),
             @CacheEvict(value = Contants.SERVICE_ONE_CACHE, key = "'bookbytenantandstatus:' + #book.getTenantId() + ':' + #book.getStatus()")}
     )
-
     public void save(Book book) {
-        save(book, book.getTenantId());
-    }
-
-    public void save(Book book, int tenantId){
         bookRepository.save(book);
     }
 

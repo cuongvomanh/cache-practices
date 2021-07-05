@@ -55,10 +55,10 @@ public class RedisSentinelCacheConfiguration extends CachingConfigurerSupport {
 
         Map<String, RedisCacheConfiguration> cacheConfigs = new HashMap<>();
 
-        Map<String, MySpringProperties.Cache.Sentinel.CacheConfig> cacheConfigMap = mySpringProperties.getCache().getSentinel().getCacheConfigAsMap();
+        Map<String, MySpringProperties.Cache.Sentinel.CacheConfig> cacheConfigByTypeMap = mySpringProperties.getCache().getSentinel().getCacheConfigByTypeMap();
         Map<String, String> cacheTypeMap = mySpringProperties.getCache().getSentinel().getCacheTypeMap();
 
-        cacheTypeMap.forEach((key, value) -> cacheConfigs.put(key, buildRedisCacheConfig(cacheConfigMap.get(value))));
+        cacheTypeMap.forEach((key, value) -> cacheConfigs.put(key, buildRedisCacheConfig(cacheConfigByTypeMap.get(value))));
 
         return RedisCacheManager.builder(redisConnectionFactory())
                 .cacheDefaults(cacheConfiguration())

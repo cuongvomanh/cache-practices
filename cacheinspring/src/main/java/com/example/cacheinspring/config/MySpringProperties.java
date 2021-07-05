@@ -115,7 +115,7 @@ public class MySpringProperties {
             private int port;
             private String password;
             private Map<String, String> cacheTypeMap;
-            private Map<String, CacheConfig> cacheConfigAsMap;
+            private Map<String, CacheConfig> cacheConfigByTypeMap;
 
             public String getMaster() {
                 return master;
@@ -157,12 +157,12 @@ public class MySpringProperties {
                 this.cacheTypeMap = cacheTypeMap;
             }
 
-            public Map<String, CacheConfig> getCacheConfigAsMap() {
-                return cacheConfigAsMap;
+            public Map<String, CacheConfig> getCacheConfigByTypeMap() {
+                return cacheConfigByTypeMap;
             }
 
-            public void setCacheConfigAsMap(Map<String, CacheConfig> cacheConfigAsMap) {
-                this.cacheConfigAsMap = cacheConfigAsMap;
+            public void setCacheConfigByTypeMap(Map<String, CacheConfig> cacheConfigByTypeMap) {
+                this.cacheConfigByTypeMap = cacheConfigByTypeMap;
             }
 
             public static class CacheConfig {

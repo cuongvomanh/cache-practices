@@ -40,7 +40,7 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
     private BuildProperties buildProperties;
 
     @Bean
-    public RedissonClient jcacheConfiguration(MySpringProperties mySpringProperties) {
+    public RedissonClient redissonClient(MySpringProperties mySpringProperties) {
         MutableConfiguration<Object, Object> jcacheConfig = new MutableConfiguration<>();
 
         URI redisUri = URI.create(mySpringProperties.getCache().getRedis().getServer()[0]);
