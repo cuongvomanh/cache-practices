@@ -2,9 +2,6 @@ package com.example.cacheinspring;
 
 import com.example.cacheinspring.domain.Book;
 import com.example.cacheinspring.service.BookService;
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.map.IMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,8 +12,10 @@ public class Runner implements CommandLineRunner {
     private BookService bookService;
     @Override
     public void run(String... args) throws Exception {
-        bookService.save(new Book(1, "Harry Potter", 1));
-        bookService.save(new Book(2, "Data Structer", 0));
+        int tenantId = 1;
+        bookService.save(new Book(1, "Harry Potter", 1, tenantId));
+        bookService.save(new Book(2, "Data Structer", 0, tenantId));
+        bookService.save(new Book(3, "Clean Code", 1, 2));
 //        IMap<Object, Object> map = Hazelcast.getAllHazelcastInstances().stream()
 //                .findAny().orElseThrow(() -> new RuntimeException("Can not find any hazelcast instance."))
 //                .getMap("books");
@@ -27,14 +26,18 @@ public class Runner implements CommandLineRunner {
         while(true){
 //            System.out.println(map.size());
             Thread.sleep(1000);
-            System.out.println("All: ");
-            bookService.findAll().forEach(System.out::println);
-            System.out.println("FindAllByStatus: ");
-            bookService.findAllActive().forEach(System.out::println);
-            System.out.println("FindAllByStatus: ");
-            bookService.findAllByStatus(1).forEach(System.out::println);
-            System.out.println("FindAllByStatus: 0");
-            bookService.findAllByStatus(0).forEach(System.out::println);
+            System.out.println("FindAllByTenantId: 1");
+            bookService.findAllByTenantId(tenantId).forEach(System.out::println);
+            System.out.println("FindAllByTenantId: 2");
+            bookService.findAllByTenantId(2).forEach(System.out::println);
+            System.out.println("FindAllByTenantIdActive: 1");
+            bookService.findAllByTenantIdActive(tenantId).forEach(System.out::println);
+            System.out.println("FindAllByTenantIdAndStatus: 1, 1");
+            bookService.findAllByTenantIdAndStatus(tenantId, 1).forEach(System.out::println);
+            System.out.println("FindAllByTenantIdAndStatus: 1, 0");
+            bookService.findAllByTenantIdAndStatus(tenantId, 0).forEach(System.out::println);
+
+            bookService.save(new Book(1, "Harry Potter1", 1, tenantId));
         }
     }
 }

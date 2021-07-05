@@ -14,15 +14,17 @@ public class Book implements Serializable {
     private long id;
     private String name;
     private int status;
+    private int tenantId;
 
 
     public Book() {
     }
 
-    public Book(long id, String name, int status) {
+    public Book(long id, String name, int status, int tenantId) {
         this.id = id;
         this.name = name;
         this.status = status;
+        this.tenantId = tenantId;
     }
 
     public long getId() {
@@ -49,12 +51,21 @@ public class Book implements Serializable {
         this.status = status;
     }
 
+    public int getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", status=" + status +
+                ", tenantId=" + tenantId +
                 '}';
     }
 }

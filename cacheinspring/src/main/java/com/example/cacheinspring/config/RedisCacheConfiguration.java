@@ -7,6 +7,8 @@ import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -19,8 +21,10 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.util.StringUtils;
 
 import javax.cache.configuration.MutableConfiguration;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +35,7 @@ import java.util.Map;
 @EnableAutoConfiguration(exclude = RedisAutoConfiguration.class)
 public class RedisCacheConfiguration extends CachingConfigurerSupport {
 
+    private Logger LOGGER = LoggerFactory.getLogger(RedisCacheConfiguration.class);
     private GitProperties gitProperties;
     private BuildProperties buildProperties;
 
@@ -87,7 +92,25 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
 
     @Bean
     public KeyGenerator keyGenerator() {
-        return new CachingConfigUtils().classNameAndFunctionNameKeyGenerator();
+        return new KeyGenerator() {
+            public Object generate(Object target, Method method, Object... params) {
+                String tenantIdString = "";
+                try {
+                    if (method.getName().matches(".*ByTenantId.*")){
+                        int tenantId = ((int) params[0]);
+                        tenantIdString = String.valueOf(tenantId);
+                    }
+                } catch (Exception exception){
+                    LOGGER.error("Get tenantId from first Param Error");
+                    exception.printStackTrace();
+                }
+
+                return target.getClass().getSimpleName().toLowerCase().replaceAll("service", "") + ":"
+                        + tenantIdString + ":"
+                        + method.getName() + ":"
+                        + StringUtils.arrayToDelimitedString(params, ":");
+            }
+        };
     }
 
 }

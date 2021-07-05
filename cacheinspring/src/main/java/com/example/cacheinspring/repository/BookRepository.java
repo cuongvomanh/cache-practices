@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    List<Book> findAllByStatus(int status);
+    List<Book> findAllByTenantId(int tenantId);
+    List<Book> findAllByTenantIdAndStatus(int tenantId, int status);
 }

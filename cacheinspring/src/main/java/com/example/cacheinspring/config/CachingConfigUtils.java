@@ -9,7 +9,6 @@ public class CachingConfigUtils {
 
     public KeyGenerator classNameAndFunctionNameKeyGenerator() {
         return new KeyGenerator() {
-            @Override
             public Object generate(Object target, Method method, Object... params) {
                 return target.getClass().getSimpleName() + "_"
                         + method.getName() + "_"
