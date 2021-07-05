@@ -18,11 +18,6 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-//    @CacheEvict(value = Contants.BOOK_SERVICE, condition = "'aa2'.equals('aa' + T(java.lang.String).valueOf(#book.getTenantId()))")
-//    @CacheEvict(value = Contants.BOOK_SERVICE, condition = "#key.startsWith('BookService_' + T(java.lang.String).valueOf(#book.getTenantId()))")
-//    @CacheEvict(value = Contants.BOOK_SERVICE, condition = "'BookService_2'.equals('BookService_' + T(java.lang.String).valueOf(#book.getTenantId()))")
-//    @CacheEvict(value = Contants.BOOK_SERVICE, condition = "#book.getName().equals('BookService_2')")
-//    @CacheEvict(value = Contants.BOOK_SERVICE, key = "#book.getTenantId()", )
     @Caching( evict = {@CacheEvict(value = Contants.SERVICE_ONE_CACHE, key = "'bookbytenant:' + #book.getTenantId()"),
             @CacheEvict(value = Contants.SERVICE_ONE_CACHE, key = "'bookbytenantactive:' + #book.getTenantId()"),
             @CacheEvict(value = Contants.SERVICE_ONE_CACHE, key = "'bookbytenantandstatus:' + #book.getTenantId() + ':' + #book.getStatus()")}

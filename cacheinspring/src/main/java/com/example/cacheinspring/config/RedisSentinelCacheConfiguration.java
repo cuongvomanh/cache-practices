@@ -69,6 +69,6 @@ public class RedisSentinelCacheConfiguration extends CachingConfigurerSupport {
 
     @Bean
     public KeyGenerator keyGenerator() {
-        return new CachingConfigUtils().classNameAndFunctionNameKeyGenerator();
+        return new CachingConfigUtils().classNameAndFunctionNameAndParamsKeyGenerator();
     }
 }

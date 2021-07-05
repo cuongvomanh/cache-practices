@@ -36,7 +36,7 @@ public class Runner implements CommandLineRunner {
             bookService.findAllByTenantIdAndStatus(tenantId, 1).forEach(System.out::println);
             System.out.println("FindAllByTenantIdAndStatus: 1, 0");
             bookService.findAllByTenantIdAndStatus(tenantId, 0).forEach(System.out::println);
-
+            System.out.println("Updating Book id: 1");
             bookService.save(new Book(1, "Harry Potter1", 1, tenantId));
         }
     }
